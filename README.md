@@ -1,14 +1,39 @@
 # Zeus
 
-Planejador que cruza uma tarefa descrita em linguagem natural com o
-índice de arquitetura gerado pela [Athena](https://github.com/netovieira/athena)
-para decidir quais arquivos de um projeto realmente importam antes de
-mudar código, e escrever um plano de ação verificável.
+![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)
+![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue.svg)
+![Stdlib only](https://img.shields.io/badge/dependencies-stdlib--only-brightgreen.svg)
+
+**Antes de mexer em código, saiba quais arquivos realmente importam
+— sem adivinhar.**
+
+Você descreve uma tarefa em português mesmo ("adicionar campo de
+telefone no cadastro de usuário") e o Zeus cruza isso com o índice de
+arquitetura gerado pela [Athena](https://github.com/netovieira/athena)
+pra decidir quais arquivos do projeto realmente importam, escrevendo
+um plano de ação verificável antes de qualquer linha de código mudar.
 
 O Zeus não lê o código-fonte diretamente: ele passa a tarefa e os
 resumos já gerados pela Athena para o [Claude Code](https://claude.com/claude-code)
 (`claude -p`), que escolhe os arquivos candidatos e escreve o plano.
 O resultado é um ponto de partida a revisar, não uma verdade absoluta.
+
+## Por que usar
+
+- **Você para de adivinhar por onde começar.** Em vez de abrir 15
+  arquivos até achar o certo, o Zeus já chega com uma lista curta e
+  justificada — ótimo pra quem está aprendendo a navegar num projeto
+  grande pela primeira vez.
+- **Um plano antes do código.** Objetivo, arquivos, passo a passo e
+  riscos, em Markdown, antes de pedir pro Claude (ou você mesmo)
+  implementar — dá pra revisar e concordar (ou discordar) antes de
+  qualquer mudança acontecer.
+- **Não custa nada rodar de novo.** O cache incremental da Athena
+  torna reindexações repetidas baratas — o Zeus roda `athena index`
+  sozinho antes de cada plano.
+- **Parte de uma suíte**: use direto (`python zeus.py plan "..."`) ou
+  via [`thero --plan "<tarefa>"`](https://github.com/netovieira/thero),
+  que já cuida de instalar o Zeus e a Athena se faltarem.
 
 ## Descrição
 
@@ -59,20 +84,12 @@ em `<PASTA>/.claude/zeus-plan.md`.
 
 ## Como funciona
 
-```
-tarefa em linguagem natural
-        |
-        v
-athena index <pasta>          (roda sempre; cache incremental faz
-        |                       reindexações repetidas serem baratas)
-        v
-.athena/summary.md + .athena/tree/**  (contexto: resumos, não código bruto)
-        |
-        v
-claude -p (Zeus pede: objetivo, arquivos, passos, riscos)
-        |
-        v
-.claude/zeus-plan.md          (plano a revisar antes de executar)
+```mermaid
+flowchart TD
+    A["Tarefa em linguagem natural"] --> B["athena index &lt;pasta&gt;<br/><i>roda sempre; cache incremental faz<br/>reindexações repetidas serem baratas</i>"]
+    B --> C[".athena/summary.md + .athena/tree/**<br/><i>contexto: resumos, não código bruto</i>"]
+    C --> D["claude -p<br/><i>Zeus pede: objetivo, arquivos, passos, riscos</i>"]
+    D --> E[".claude/zeus-plan.md<br/><i>plano a revisar antes de executar</i>"]
 ```
 
 ## Athena
@@ -137,7 +154,6 @@ zeus/
 **Anthero Vieira Neto**
 
 - E-mail: antherovn@gmail.com
-- WhatsApp Business: +55 17 9210-1133
 - LinkedIn: https://www.linkedin.com/in/anthero-vieira-neto-aa7a6b8a
 - GitHub: http://github.com/netovieira
 
