@@ -1,0 +1,18 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# Saída da Athena e planos do Zeus quando rodado dentro deste repo
+# em testes
+.athena/
+.claude/zeus-plan.md
+.claude/zeus-plan.backup_*.md
+
+# Editor / OS
+.vscode/
+.idea/
+Thumbs.db
+.DS_Store
